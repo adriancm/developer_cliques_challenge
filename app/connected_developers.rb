@@ -1,5 +1,6 @@
 
 require 'twitter'
+require_relative '../config/app_logger'
 
 class ConnectedDevelopers
 
@@ -33,11 +34,11 @@ class ConnectedDevelopers
     local_graph = {}
 
     @developers.each do |user_name|
-      puts "===user===", user_name
+      AppLogger.debug "USER: #{user_name}"
       friends_names = friends(user_name)
-      puts "===friends===", friends_names
+      AppLogger.debug "FRIENDS: #{friends_names}"
       followers_names = followers(user_name)
-      puts "===followers===", followers_names
+      AppLogger.debug "FOLLOWERS: #{followers_names}"
       connected =  friends_names & followers_names & developers
       local_graph[user_name] = connected
     end
