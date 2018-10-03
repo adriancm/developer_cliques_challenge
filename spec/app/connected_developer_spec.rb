@@ -1,6 +1,7 @@
 
 require 'rspec'
 require_relative '../../app/connected_developers'
+require_relative '../../config/github_config'
 
 describe ConnectedDevelopers do
 
@@ -36,14 +37,41 @@ describe ConnectedDevelopers do
     twitter_double
   end
 
-  let(:connected_developers) do
-    ConnectedDevelopers.new developers: ["user1", "user2", "user3", "user4"], twitter_client: twitter_client
+  let(:github_client) do
+
+    organizations = {
+        "user1" => [double(login: "github"), double(login: "linkeddata")],
+        "user2" => [double(login: "w3ctag")],
+        "user3" => [double(login: "w3ctag")],
+        "user4" => [double(login: "w3ctag")]
+    }
+
+    github_double = double("Octokit::Client", organizations: [])
+    allow(github_double).to receive(:organizations) do |user_name|
+      organizations[user_name]
+    end
+
+    github_double
   end
+
+  let(:connected_developers) do
+    ConnectedDevelopers.new developers: ["user1", "user2", "user3", "user4"],
+                            twitter_client: twitter_client,
+                            github_client: github_client
+  end
+
+  let(:connected_developers_with_github) do
+    ConnectedDevelopers.new developers: ["user1", "user2", "user3", "user4"],
+                            twitter_client: twitter_client,
+                            github_client: GithubClient.get
+  end
+
+
 
   let(:result_graph) do
     {
-        "user1" => ["user2"],
-        "user2" => ["user1", "user3", "user4"],
+        "user1" => [],
+        "user2" => ["user3", "user4"],
         "user3" => ["user2", "user4"],
         "user4" => ["user2", "user3"]
     }
@@ -51,6 +79,10 @@ describe ConnectedDevelopers do
 
   it 'returns a graph' do
     expect(connected_developers.graph).to eq(result_graph)
+  end
+
+  it 'returns organizations', integration: true do
+    expect(connected_developers_with_github.organizations('timbl')).to eq(["linkeddata", "w3ctag"])
   end
 
 end

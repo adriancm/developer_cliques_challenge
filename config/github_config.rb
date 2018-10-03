@@ -1,0 +1,9 @@
+
+require 'octokit'
+require_relative 'dotenv_config'
+
+class GithubClient
+  def self.get
+    Octokit::Client.new(access_token: ENV["GITHUB_ACCESS_TOKEN"])
+  end
+end

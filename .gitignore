@@ -83,6 +83,7 @@ build-iPhoneSimulator/
 /rdoc/
 
 ## Environment normalization:
+*.log
 .env
 /.bundle/
 /vendor/bundle
