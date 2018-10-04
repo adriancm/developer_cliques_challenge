@@ -1,7 +1,7 @@
 
 require 'twitter'
 require 'octokit'
-require_relative '../config/app_logger'
+require_relative '../../config/app_logger'
 
 class ConnectedDevelopers
 

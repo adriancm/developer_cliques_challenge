@@ -1,9 +1,9 @@
 
 require 'rspec'
-require_relative '../../app/connected_developers'
-require_relative '../../config/github_config'
+require_relative '../../lib/developer_cliques'
 
-describe ConnectedDevelopers do
+
+describe DeveloperCliques do
 
   def duser user
     double(screen_name: user)
@@ -60,29 +60,18 @@ describe ConnectedDevelopers do
                             github_client: github_client
   end
 
-  let(:connected_developers_with_github) do
-    ConnectedDevelopers.new developers: ["user1", "user2", "user3", "user4"],
-                            twitter_client: twitter_client,
-                            github_client: GithubClient.get
+
+  let(:developer_cliques) do
+    allow_any_instance_of(DeveloperCliques).to receive(:get_connected_developers).and_return(connected_developers)
+    DeveloperCliques.new file: '../fixtures/developers_input.txt'
   end
 
+  context 'get maximal cliques' do
+    it 'calculates from developers usernames' do
 
+      expect(developer_cliques.execute).to eq([["user1"],["user2", "user3", "user4"]])
 
-  let(:result_graph) do
-    {
-        "user1" => [],
-        "user2" => ["user3", "user4"],
-        "user3" => ["user2", "user4"],
-        "user4" => ["user2", "user3"]
-    }
-  end
-
-  it 'returns a graph' do
-    expect(connected_developers.graph).to eq(result_graph)
-  end
-
-  it 'returns organizations', integration: true do
-    expect(connected_developers_with_github.organizations('timbl')).to eq(["linkeddata", "w3ctag"])
+    end
   end
 
 end

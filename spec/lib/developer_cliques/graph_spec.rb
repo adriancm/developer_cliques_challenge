@@ -1,6 +1,7 @@
 
 require 'rspec'
-require_relative '../../lib/graph'
+require_relative '../../../lib/developer_cliques/graph'
+
 
 describe Graph do
 
