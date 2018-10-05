@@ -1,5 +1,6 @@
 
 require 'rspec'
+require_relative '../../spec_helper'
 require_relative '../../../lib/developer_cliques/connected_developers'
 require_relative '../../../config/github_config'
 

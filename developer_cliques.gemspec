@@ -6,8 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Calculates maximal cliques from developers social connections"
   s.authors     = ["Adrián Cepillo"]
   s.email       = 'adrian.cepillo@gmail.com'
-  s.files       = ["lib/hola.rb"]
-  s.homepage    =
-      'http://rubygems.org/gems/developer_cliques'
-  s.license       = 'MIT'
+  s.files       = ["lib/developers_cliques.rb"]
+  s.homepage    = 'http://rubygems.org/gems/developer_cliques'
+  s.license     = 'MIT'
 end

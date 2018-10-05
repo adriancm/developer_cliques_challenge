@@ -3,6 +3,7 @@ source "https://rubygems.org"
 
 group :development, :test do
   gem "rspec"
+  gem 'simplecov', require: false
 end
 
 group :development, :test, :production do
