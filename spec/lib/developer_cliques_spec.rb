@@ -62,15 +62,22 @@ describe DeveloperCliques do
   end
 
 
-  let(:developer_cliques) do
-    allow_any_instance_of(DeveloperCliques).to receive(:get_connected_developers).and_return(connected_developers)
-    DeveloperCliques.new file: '../fixtures/developers_input.txt'
+  context 'get maximal cliques' do
+    it 'calculates from fake developers usernames' do
+
+      allow_any_instance_of(DeveloperCliques).to receive(:connected_developers).and_return(connected_developers)
+      developer_cliques = DeveloperCliques.new file: fixture('developers_input')
+      expect(developer_cliques.max_cliques).to eq([["user1"],["user2", "user3", "user4"]])
+
+    end
+
   end
 
-  context 'get maximal cliques' do
-    it 'calculates from developers usernames' do
+  context 'read input file' do
+    it 'gets developers usernames' do
 
-      expect(developer_cliques.execute).to eq([["user1"],["user2", "user3", "user4"]])
+      developer_cliques = DeveloperCliques.new file: fixture('developers_input')
+      expect(developer_cliques.developers).to eq(["user1", "user2", "user3", "user4"])
 
     end
   end
