@@ -1,10 +1,8 @@
 #!/usr/bin/env ruby
 
-
-
 require 'optparse'
 require 'dotenv'
-require_relative "#{File.join(File.dirname(__FILE__), '../lib/developer_cliques')}"
+require_relative '../lib/developer_cliques'
 
 Dotenv.load('.env')
 

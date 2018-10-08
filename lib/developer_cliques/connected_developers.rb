@@ -60,7 +60,7 @@ class ConnectedDevelopers
       end
 
       #Intersection between friends, followers and current relationships by organizations in common
-      #developers_graph[developer] &= friends(developer) & followers(developer) unless developers_graph[developer].empty?
+      developers_graph[developer] &= friends(developer) & followers(developer) unless developers_graph[developer].empty?
 
     end
 
