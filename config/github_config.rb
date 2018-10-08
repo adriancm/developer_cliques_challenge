@@ -1,6 +1,4 @@
-
 require 'octokit'
-require_relative 'dotenv_config'
 
 class GithubClient
   def self.get

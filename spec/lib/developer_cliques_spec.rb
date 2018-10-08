@@ -66,9 +66,17 @@ describe DeveloperCliques do
     it 'calculates from fake developers usernames' do
 
       allow_any_instance_of(DeveloperCliques).to receive(:connected_developers).and_return(connected_developers)
-      developer_cliques = DeveloperCliques.new file: fixture('developers_input')
+      developer_cliques = DeveloperCliques.new file: fixture('fake_users.txt')
       expect(developer_cliques.max_cliques).to eq([["user1"],["user2", "user3", "user4"]])
 
+    end
+
+    skip "Twitter API for Free takes too much" do
+      #Twitter API allow one request every 15 minutes with free account that's hard to test
+      it 'calculates from reals developers usernames', integration: true do
+        developer_cliques = DeveloperCliques.new file: fixture('real_users.txt')
+        expect(developer_cliques.max_cliques).to eq([["athurnn"],["amatsuda"], ["sferik"]])
+      end
     end
 
   end
@@ -76,7 +84,7 @@ describe DeveloperCliques do
   context 'read input file' do
     it 'gets developers usernames' do
 
-      developer_cliques = DeveloperCliques.new file: fixture('developers_input')
+      developer_cliques = DeveloperCliques.new file: fixture('fake_users.txt')
       expect(developer_cliques.developers).to eq(["user1", "user2", "user3", "user4"])
 
     end

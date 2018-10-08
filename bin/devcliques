@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+
+
+require 'optparse'
+require 'dotenv'
+require_relative "#{File.join(File.dirname(__FILE__), '../lib/developer_cliques')}"
+
+Dotenv.load('.env')
+
+begin
+  opt_parser = OptionParser.new do |opts|
+    opts.banner = "Usage: developer_cliques.rb [options]"
+
+    opts.on("-f", "--file USERNAMES", "Calculates maximal cliques") do |file|
+      DeveloperCliques.new(file: file).max_cliques.each { |clique| puts clique.join(' ') }
+    end
+
+    opts.on_tail("-e", "--env ENVIRONMENT_VARS", "Calculates maximal cliques") do |env|
+      Dotenv.load(env) if env
+    end
+
+    opts.on_tail("-h", "--help", "Show this help") do
+      puts opts
+      exit
+    end
+  end
+
+  opt_parser.parse!
+
+rescue OptionParser::MissingArgument => error
+  puts error
+  puts opt_parser
+end

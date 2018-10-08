@@ -1,4 +1,7 @@
 require 'simplecov'
+require 'dotenv'
+
+Dotenv.load("../.env")
 SimpleCov.start
 
 def fixture filename

@@ -1,5 +1,4 @@
 require 'twitter'
-require_relative 'dotenv_config'
 
 class TwitterClient
   def self.get
@@ -8,7 +7,7 @@ class TwitterClient
       config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
       config.access_token        = ENV["TWITTER_ACCESS_TOKEN"]
       config.access_token_secret = ENV["TWITTER_ACCESS_TOKEN_SECRET"]
+    end
   end
-end
 
 end

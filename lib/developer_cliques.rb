@@ -1,6 +1,8 @@
 
 require_relative 'developer_cliques/connected_developers'
 require_relative 'developer_cliques/graph'
+require_relative '../config/twitter_config'
+require_relative '../config/github_config'
 
 
 class DeveloperCliques
