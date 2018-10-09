@@ -48,7 +48,8 @@ class ConnectedDevelopers
       graph_by_developer developers_graph: developers_graph, developer: developer, excluded: excluded.clone
     end
 
-    Concurrent::Promise.all?(*promises).execute.then{ developers_graph }
+    Concurrent::Promise.all?(*promises).execute.wait!
+    developers_graph
   end
 
   def graph_by_developer developers_graph:, developer:, excluded:

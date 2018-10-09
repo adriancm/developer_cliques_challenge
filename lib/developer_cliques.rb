@@ -16,7 +16,7 @@ class DeveloperCliques
   end
 
   def max_cliques
-    developers_graph = Graph.new edges: connected_developers.graph.wait!.value
+    developers_graph = Graph.new edges: connected_developers.graph
     developers_graph.max_cliques
   end
 

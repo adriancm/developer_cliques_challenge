@@ -78,7 +78,7 @@ describe ConnectedDevelopers do
   end
 
   it 'returns a graph' do
-    connected_developers.graph.then{ |graph| expect(graph).to eq(result_graph) }
+    expect(connected_developers.graph).to eq(result_graph)
   end
 
   it 'returns organizations', integration: true do
