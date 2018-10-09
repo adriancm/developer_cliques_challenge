@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://rubygems.org/gems/developer_cliques'
   s.license     = 'MIT'
   s.add_runtime_dependency 'octokit', '~>4.0'
-  s.add_runtime_dependency 'twitter', '~>6.0'
-  s.add_runtime_dependency 'dotenv', '~>2.0'
+  s.add_runtime_dependency 'twitter', '~>6'
+  s.add_runtime_dependency 'dotenv', '~>2'
+  s.add_runtime_dependency 'concurrent-ruby', '~>1'
 end
