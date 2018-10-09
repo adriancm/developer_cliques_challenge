@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'developer_cliques'
-  s.version     = '0.5.0'
+  s.version     = '1.0.0'
   s.executables << 'devcliques'
   s.date        = '2018-10-04'
   s.summary     = 'Calculates maximal cliques from developers social connections'
