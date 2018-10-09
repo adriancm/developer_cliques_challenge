@@ -1,6 +1,7 @@
 
 require 'twitter'
 require 'octokit'
+require 'concurrent'
 require_relative '../../config/app_logger'
 
 class ConnectedDevelopers
@@ -40,31 +41,49 @@ class ConnectedDevelopers
     developers_graph = {}
     excluded = []
 
-    @developers.each do |developer|
-      AppLogger.debug "GITHUB USER: #{developer}"
-      AppLogger.debug "ORGANIZATIONS: #{organizations(developer)}"
-
+    promises = developers.map do |developer|
       excluded << developer
       developers_graph[developer] ||= []
 
-      #Bidireccional relationship. It excludes iterated developers and itself. We look in one way only
-      (@developers-excluded).each do |developer2|
-        # Intersection between organizations if there are some organization in common goes in
-        unless (organizations(developer) & organizations(developer2)).empty?
-          #It creates relationship in one direction
-          developers_graph[developer] << developer2
-          # And reverse direction
-          developers_graph[developer2] ||= []
-          developers_graph[developer2] << developer
-        end
-      end
-
-      #Intersection between friends, followers and current relationships by organizations in common
-      developers_graph[developer] &= friends(developer) & followers(developer) unless developers_graph[developer].empty?
-
+      graph_by_developer developers_graph: developers_graph, developer: developer, excluded: excluded.clone
     end
 
-    developers_graph
+    Concurrent::Promise.all?(*promises).execute.then{ developers_graph }
+  end
+
+  def graph_by_developer developers_graph:, developer:, excluded:
+    AppLogger.debug "GITHUB USER: #{developer}"
+    AppLogger.debug "ORGANIZATIONS: #{organizations(developer)}"
+
+    Concurrent::Promise.new {
+      graph_by_organization developers_graph: developers_graph,
+                            remaining_devs: developers-excluded,
+                            current_developer: developer
+    }.then{ |relationships|
+      developers_graph[developer] = twitter_friendships developer: developer, relationships: relationships
+    }
+  end
+
+  def graph_by_organization developers_graph:, remaining_devs:, current_developer:
+    #Bidireccional relationship. It excludes iterated developers and itself. We look only in one way
+    AppLogger.debug "REMAINING DEVS: #{remaining_devs}"
+    remaining_devs.each do |related_developer|
+      # Intersection between organizations if there are some organization in common goes in
+      unless (organizations(current_developer) & organizations(related_developer)).empty?
+        #It creates relationship in one direction
+        developers_graph[current_developer] << related_developer
+        # And reverse direction
+        developers_graph[related_developer] ||= []
+        developers_graph[related_developer] << current_developer
+      end
+    end
+    developers_graph[current_developer]
+  end
+
+  def twitter_friendships developer:, relationships:
+    #Intersection between friends, followers and current relationships by organizations in common
+    relationships &= friends(developer) & followers(developer) unless relationships.empty?
+    relationships
   end
 
   def twitter_retry &block

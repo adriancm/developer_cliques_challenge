@@ -11,7 +11,7 @@ begin
     opts.banner = "Usage: developer_cliques.rb [options]"
 
     opts.on("-f", "--file USERNAMES", "Calculates maximal cliques") do |file|
-      DeveloperCliques.new(file: file).max_cliques.each { |clique| puts clique.join(' ') }
+      DeveloperCliques.new(file: file).max_cliques.each{ |clique| puts clique.join(' ') }
     end
 
     opts.on_tail("-e", "--env ENVIRONMENT_VARS", "Calculates maximal cliques") do |env|
@@ -30,3 +30,4 @@ rescue OptionParser::MissingArgument => error
   puts error
   puts opt_parser
 end
+

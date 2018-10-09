@@ -10,4 +10,5 @@ group :development, :test, :production do
   gem "twitter"
   gem "dotenv"
   gem "octokit", "~> 4.0"
+  gem "concurrent-ruby", require: 'concurrent'
 end
