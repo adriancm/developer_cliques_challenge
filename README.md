@@ -59,3 +59,21 @@ Execute *rspec*:
 
 ## Run tests
 ```rspec```
+
+## Notes
+
+- The free version of the Twitter API allows me 1 request every 15 minutes from the 'friends' and 'followers' endpoints. I don't know if I'm missing something, but as much as I have read and reread, it seems to be the case. This has complicated my tests, and there is one test that is currently there but not executed, and the others mock the response from Twitter.
+
+- ConnectedDevelopers#generate_graph: I have incorporated Promises when generating the graph, but these use a common hash upon which the graph is built. Due to the GIL of MRI and the use of 'concurrent-ruby' (which reimplements Array, Hash, etc.), the use of a mutable object asynchronously is Thread-Safe. The algorithm is O(n^2/2), and the benefit is a division by 2, but it still remains n^2. That's why I was thinking of refactoring this part so that each promise manages local variables and although there would be a small loss of performance, the code would be simpler, more robust, and elegant. 
+
+- QA and CI: The tests cover the highest percentage of code but only the success cases; I have not started to do a deep battery of tests. The most critical points are the generation of the graph and then the Bron-Kerbosch algorithm; that's where I would have dedicated my efforts to cover all possible cases. The project comes with continuous integration using Codeship, test execution, coverage, static code analysis with Code Climate (Reek, Rubocop, Flog, Bundle-Audit). Bundle-Audit also checks that there are no dependencies with security flaws.
+
+- Docker: There is a Dockerfile and a docker-compose; I have this container to play around without having to install Ruby and this project's dependencies on the machine. It's a pretty quick way to work.
+
+- Gem: The project is packaged in gem format and uploaded to Rubygems. It installs easily and you can execute the 'devcliques' command wherever you want.
+
+- Logging: A log file called 'application.log' is generated where the script is executed.
+
+- Metaprogramming: There is a bit in the AppLogger, it was useful.
+
+- SOLID: I have tried to give a single responsibility to each class and used dependency injection.
